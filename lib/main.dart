@@ -1,3 +1,5 @@
+import 'widgets/country_list.dart';
+
 import '../screens/countries_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:device_preview/device_preview.dart';
@@ -19,12 +21,41 @@ class MyApp extends StatelessWidget {
       title: 'Flutter Demo',
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
-        brightness: Brightness.light,
-        primarySwatch: Colors.blue,
-      ),
+          textTheme: TextTheme(
+            headline1: TextStyle(
+              color: Colors.black,
+              //fontWeight: FontWeight.bold,
+              fontFamily: 'Axiforma',
+              fontSize: 14,
+            ),
+            headline2: TextStyle(
+              color: Color.fromARGB(255, 102, 98, 98),
+              fontFamily: 'Axiforma',
+              //fontWeight: FontWeight.bold,
+              fontSize: 14,
+            ),
+          ),
+          brightness: Brightness.light,
+          backgroundColor: Colors.white,
+          fontFamily: 'Axiforma'),
       darkTheme: ThemeData(
+          textTheme: TextTheme(
+            headline1: TextStyle(
+              color: Colors.white,
+              fontFamily: 'Axiforma',
+              //fontWeight: FontWeight.normal,
+              fontSize: 14,
+            ),
+            headline2: TextStyle(
+              color: Colors.white54,
+              fontFamily: 'Axiforma',
+              fontSize: 14,
+              //fontWeight: FontWeight.normal,
+            ),
+          ),
           brightness: Brightness.dark,
-          backgroundColor: Color.fromARGB(255, 2, 18, 31)),
+          backgroundColor: Color.fromARGB(255, 2, 18, 31),
+          fontFamily: 'Axiforma'),
       home: const MyHomePage(title: 'Flutter Demo Home Page'),
     );
   }
@@ -33,8 +64,6 @@ class MyApp extends StatelessWidget {
 class MyHomePage extends StatefulWidget {
   const MyHomePage({super.key, required this.title});
 
-
-
   final String title;
 
   @override
@@ -42,18 +71,8 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  int _counter = 0;
-
-  void _incrementCounter() {
-    setState(() {
-
-      _counter++;
-    });
-  }
-
   @override
   Widget build(BuildContext context) {
-
     return CountriesScreen();
   }
 }

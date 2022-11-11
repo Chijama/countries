@@ -1,7 +1,4 @@
-import 'package:flutter/src/widgets/container.dart';
-import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
 
 class SearchBar extends StatefulWidget {
   const SearchBar({super.key});
@@ -33,7 +30,11 @@ class _SearchBarState extends State<SearchBar> {
                 ),
               ),
               hintText: "Search Countries",
-              //hintStyle: GoogleFonts.ax
+              hintStyle: TextStyle(
+                fontStyle: FontStyle.normal,
+                fontSize: 14,
+                fontWeight: FontWeight.bold,
+              ),
               prefixIcon: const Icon(
                 Icons.search,
                 size: 30,

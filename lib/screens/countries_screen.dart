@@ -1,3 +1,9 @@
+import 'package:untitled/widgets/country_list.dart';
+
+import '/service.dart';
+
+import '../models/country_model.dart';
+
 import '../widgets/search_bar.dart';
 import 'package:flutter/material.dart';
 
@@ -11,6 +17,19 @@ class CountriesScreen extends StatefulWidget {
 }
 
 class _CountriesScreenState extends State<CountriesScreen> {
+  late Future<List<CountriesModel>> countriesData;
+  var isLoaded = false;
+
+  @override
+  void initState() {
+    super.initState();
+    getData();
+  }
+
+  getData() async {
+    countriesData = Service().getCountries();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -35,7 +54,7 @@ class _CountriesScreenState extends State<CountriesScreen> {
                     Text('.',
                         style: GoogleFonts.elsieSwashCaps(
                             fontWeight: FontWeight.bold,
-                            fontSize: 30,
+                            fontSize: 50,
                             color: Colors.orange)),
                   ],
                 ),
@@ -48,6 +67,7 @@ class _CountriesScreenState extends State<CountriesScreen> {
               ],
             ),
             SearchBar(),
+            CountriesList(),
           ]),
     );
   }
