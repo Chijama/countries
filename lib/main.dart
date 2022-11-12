@@ -1,5 +1,3 @@
-import 'widgets/country_list.dart';
-
 import '../screens/countries_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:device_preview/device_preview.dart';
@@ -21,6 +19,8 @@ class MyApp extends StatelessWidget {
       title: 'Flutter Demo',
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
+          hintColor: Colors.blueGrey,
+          cardColor: Colors.white60,
           textTheme: TextTheme(
             headline1: TextStyle(
               color: Colors.black,
@@ -39,6 +39,8 @@ class MyApp extends StatelessWidget {
           backgroundColor: Colors.white,
           fontFamily: 'Axiforma'),
       darkTheme: ThemeData(
+          hintColor: Colors.white,
+          cardColor: Colors.transparent,
           textTheme: TextTheme(
             headline1: TextStyle(
               color: Colors.white,
