@@ -1,9 +1,7 @@
-import 'package:adaptive_theme/adaptive_theme.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:untitled/widgets/languages.dart';
+import 'package:untitled/widgets/filter.dart';
 
 import '../models/country_model.dart';
 import '../screens/details_screen.dart';
@@ -77,15 +75,7 @@ class _CountriesScreenState extends State<CountriesScreen> {
                               ],
                             ),
                             IconButton(
-                                onPressed: () {
-                                  AdaptiveTheme.of(context).toggleThemeMode();
-                                  // MediaQuery.of(context).platformBrightness ==
-                                  //         Brightness.light
-                                  //     ? // sets theme mode to dark
-                                  //     AdaptiveTheme.of(context).setDark()
-                                  //     : // sets theme mode to light
-                                  //     AdaptiveTheme.of(context).setLight();
-                                },
+                                onPressed: () {},
                                 icon:
                                     MediaQuery.of(context).platformBrightness ==
                                             Brightness.light
@@ -127,12 +117,12 @@ class _CountriesScreenState extends State<CountriesScreen> {
                           children: <Widget>[
                             GestureDetector(
                               onTap: () {
-                                showModalBottomSheet(
-                                  context: context,
-                                  builder: (context) {
-                                    return SelectLanguage();
-                                  },
-                                );
+                                // showModalBottomSheet(
+                                //   context: context,
+                                //   builder: (context) {
+                                //     return Contains();
+                                //   },
+                                // );
                               },
                               child: Container(
                                 //padding: const EdgeInsets.all(20.0),
@@ -167,9 +157,9 @@ class _CountriesScreenState extends State<CountriesScreen> {
                               onTap: () {
                                 showModalBottomSheet(
                                   context: context,
-                                  isDismissible: false,
+                                  //isDismissible: false,
                                   builder: (context) {
-                                    return SelectLanguage();
+                                    return Filter();
                                   },
                                 );
                               },

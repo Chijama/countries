@@ -20,7 +20,7 @@ class _CircleBarState extends State<CircleBar> {
       height: widget.isActive ? 12 : 8,
       width: widget.isActive ? 12 : 8,
       decoration: BoxDecoration(
-          color: widget.isActive ? Colors.orange : Colors.grey,
+          color: widget.isActive ? Colors.white : Colors.grey,
           borderRadius: BorderRadius.all(Radius.circular(12))),
     );
     ;

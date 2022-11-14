@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:untitled/widgets/circle_bar.dart';
-import '../service.dart';
+
 import '../models/country_model.dart';
+import '../service.dart';
 
 class CountryDetails extends StatefulWidget {
   const CountryDetails(
@@ -45,7 +46,7 @@ class _CountryDetailsState extends State<CountryDetails> {
           width: 8,
         ),
         Text(
-          jsonLocation,
+          jsonLocation == null ? '' : jsonLocation,
           style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w300),
         )
       ],
@@ -74,7 +75,7 @@ class _CountryDetailsState extends State<CountryDetails> {
         future: countries,
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
-            return Center(child: const CircularProgressIndicator());
+            return const Center(child: CircularProgressIndicator());
           }
           if (snapshot.hasData) {
             if (snapshot.data == null) {
@@ -94,8 +95,8 @@ class _CountryDetailsState extends State<CountryDetails> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: <Widget>[
-                    SizedBox(
-                      height: 50,
+                    const SizedBox(
+                      height: 20,
                     ),
                     Container(
                       height: 30,
@@ -103,7 +104,7 @@ class _CountryDetailsState extends State<CountryDetails> {
                         mainAxisAlignment: MainAxisAlignment.start,
                         children: <Widget>[
                           IconButton(
-                            icon: Icon(Icons.arrow_back),
+                            icon: const Icon(Icons.arrow_back),
                             onPressed: () => Navigator.pop(context),
                           ),
                           SizedBox(
@@ -111,21 +112,23 @@ class _CountryDetailsState extends State<CountryDetails> {
                           ),
                           Text(
                             "${snapshot.data?[widget.index].name?.common}",
-                            style: TextStyle(
+                            style: const TextStyle(
                                 fontWeight: FontWeight.bold, fontSize: 20),
                           )
                         ],
                       ),
                     ),
-                    SizedBox(
+                    const SizedBox(
                       height: 7,
                     ),
-                    Container(
+                    SizedBox(
+                      height: 200.0,
+                      width: MediaQuery.of(context).size.width - 10,
                       child: Stack(
                         alignment: AlignmentDirectional.bottomCenter,
                         children: <Widget>[
                           PageView(
-                            physics: ClampingScrollPhysics(),
+                            physics: const ClampingScrollPhysics(),
                             //itemCount: countriesList.length,
                             onPageChanged: (int page) {
                               getChangedPageAndMoveBar(page);
@@ -136,6 +139,8 @@ class _CountryDetailsState extends State<CountryDetails> {
                                   "${snapshot.data?[widget.index].flags?.png}"),
                               countryImage(
                                   "${snapshot.data?[widget.index].coatOfArms?.png}"),
+                              // countryImage(
+                              //     "${snapshot.data?[widget.index].maps?.openStreetMaps}"),
                             ],
                             //itemBuilder: (context, index) {
                             // return countriesList[index];
@@ -145,23 +150,33 @@ class _CountryDetailsState extends State<CountryDetails> {
                               top: 60,
                               right: 0,
                               child: IconButton(
-                                icon: Icon(Icons.arrow_forward_ios_rounded),
-                                onPressed: () {},
+                                icon:
+                                    const Icon(Icons.arrow_forward_ios_rounded),
+                                onPressed: () {
+                                  controller.nextPage(
+                                      duration: const Duration(microseconds: 1),
+                                      curve: Curves.easeInOut);
+                                },
                               )),
                           Positioned(
                               top: 60,
                               left: 0,
                               child: IconButton(
-                                icon: Icon(Icons.arrow_back_ios_new_rounded),
-                                onPressed: () {},
+                                icon: const Icon(
+                                    Icons.arrow_back_ios_new_rounded),
+                                onPressed: () {
+                                  controller.previousPage(
+                                      duration: const Duration(microseconds: 1),
+                                      curve: Curves.easeInOut);
+                                },
                               )),
                           Container(
-                              margin: EdgeInsets.only(bottom: 35),
+                              margin: const EdgeInsets.only(bottom: 35),
                               child: Row(
                                 mainAxisSize: MainAxisSize.min,
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: <Widget>[
-                                  for (int i = 0; i < 3; i++)
+                                  for (int i = 0; i < 2; i++)
                                     if (i == currentPageValue) ...[
                                       const CircleBar(true)
                                     ] else
@@ -171,7 +186,7 @@ class _CountryDetailsState extends State<CountryDetails> {
                         ],
                       ),
                     ),
-                    SizedBox(height: 24),
+                    const SizedBox(height: 24),
                     SingleChildScrollView(
                       child: Column(
                         children: [
@@ -183,19 +198,23 @@ class _CountryDetailsState extends State<CountryDetails> {
                               "${snapshot.data?[widget.index].region}"),
                           Countrydetail("Capital",
                               "${snapshot.data?[widget.index].capital == null ? "" : snapshot.data?[widget.index].capital[0]}"),
-                          SizedBox(height: 24),
+
+                          const SizedBox(height: 24),
                           Countrydetail("Official Language",
                               "${snapshot.data?[widget.index].languages?.ara}"),
-                          // Countrydetail(  "Religion",  "${snapshot.data?[widget.index].}"),
-                          // Countrydetail(  "Religion",  "${snapshot.data?[widget.index].}"),
-                          // Countrydetail(  "Religion",  "${snapshot.data?[widget.index].}"),
-                          // Countrydetail(  "Religion",  "${snapshot.data?[widget.index].}"),
-                          Countrydetail("Time",
-                              "${snapshot.data?[widget.index].timezones[0]}"),
+                          Countrydetail(
+                              "Area", "${snapshot.data?[widget.index].area} "),
                           Countrydetail(
                             "Currency",
                             "${snapshot.data?[widget.index].currencies?.mRU}",
                           ),
+                          const SizedBox(height: 24),
+                          //  Countrydetail(  "Subregion",  "${snapshot.data?[widget.index].subregion}"),
+                          //  Countrydetail(  "Continent",  "${snapshot.data?[widget.index].continents}"),
+                          // // Countrydetail(  "Religion",  "${snapshot.data?[widget.index].}"),
+                          Countrydetail("Time",
+                              "${snapshot.data?[widget.index].timezones[0]}"),
+
                           Countrydetail(
                             "Driving Side",
                             "${snapshot.data?[widget.index].car!.side}",
@@ -208,7 +227,7 @@ class _CountryDetailsState extends State<CountryDetails> {
               ),
             );
           } else {
-            return Text("error");
+            return const Text("error");
           }
         },
       ),
