@@ -1,16 +1,28 @@
-# untitled
+# Countries
 
-A new Flutter project.
+Countries application displays detailed information about all the countries in the world.
 
-## Getting Started
+- Searchable by country name
 
-This project is a starting point for a Flutter application.
+## The Codebase consists of two srceens
+- countries_screen.dart
+- details_screen
 
-A few resources to get you started if this is your first Flutter project:
+## Libraries used 
+- font_awesome_flutter
+- http
+-
+•	A description of the challenges you faced and how you solved them.
+## Challenges faced
+- Connecting to the API 
+- Aligning the widgets
+- Search
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+## Features I would like to add if I had more time
+- Language selection
+- Filter
+- 
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+•	A link to the APK or IPA file
+•	A link to the Appetize.io link
+

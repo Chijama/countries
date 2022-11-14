@@ -1,14 +1,13 @@
+import 'package:adaptive_theme/adaptive_theme.dart';
+import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:untitled/screens/details_screen.dart';
-
-import '/service.dart';
+import 'package:google_fonts/google_fonts.dart';
+import 'package:untitled/widgets/languages.dart';
 
 import '../models/country_model.dart';
-
-import '../widgets/search_bar.dart';
-import 'package:flutter/material.dart';
-
-import 'package:google_fonts/google_fonts.dart';
+import '../screens/details_screen.dart';
+import '/service.dart';
 
 class CountriesScreen extends StatefulWidget {
   const CountriesScreen({super.key});
@@ -18,7 +17,7 @@ class CountriesScreen extends StatefulWidget {
 }
 
 class _CountriesScreenState extends State<CountriesScreen> {
-  late Future<List<CountriesModel>> countriesData;
+  late Future<List<CountriesModel>> countries;
   var isLoaded = false;
 
   @override
@@ -28,126 +27,230 @@ class _CountriesScreenState extends State<CountriesScreen> {
   }
 
   getData() async {
-    countriesData = Service().getCountries();
+    countries = Service().getCountries();
   }
 
   String searchParameter = "";
-  final TextEditingController searchController = TextEditingController();
+
+  final TextEditingController _searchController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Theme.of(context).backgroundColor,
-      body: FutureBuilder<List<CountriesModel>>(
-          future: countriesData,
-          builder: (context, snapshot) {
-            if (snapshot.connectionState == ConnectionState.waiting) {
-              return const CircularProgressIndicator();
-            }
-            if (snapshot.hasData) {
-              if (snapshot.data == null) {
-                return const Text("List is empty");
-              }
-              return Column(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: <Widget>[
-                    SizedBox(
-                      height: 50,
-                    ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        backgroundColor: Theme.of(context).backgroundColor,
+        body: SafeArea(
+          minimum: const EdgeInsets.symmetric(
+            horizontal: 24,
+          ),
+          child: Padding(
+            padding: const EdgeInsets.only(top: 30),
+            child: FutureBuilder<List<CountriesModel>>(
+                future: countries,
+                builder: (context, snapshot) {
+                  if (snapshot.connectionState == ConnectionState.waiting) {
+                    return const CircularProgressIndicator();
+                  }
+                  if (snapshot.hasData) {
+                    if (snapshot.data == null) {
+                      return const Text("List is empty");
+                    }
+                    return Column(
                       children: <Widget>[
                         Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: <Widget>[
-                            Text('Explore',
-                                style: GoogleFonts.elsieSwashCaps(
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 30,
-                                )),
-                            Text('.',
-                                style: GoogleFonts.elsieSwashCaps(
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: 30,
-                                    color: Colors.orange)),
+                            // SizedBox(
+                            //   height: 50,
+                            // ),
+                            Row(
+                              children: <Widget>[
+                                Text('Explore',
+                                    style: GoogleFonts.elsieSwashCaps(
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 25,
+                                    )),
+                                Text('.',
+                                    style: GoogleFonts.elsieSwashCaps(
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 25,
+                                        color: Colors.orange)),
+                              ],
+                            ),
+                            IconButton(
+                                onPressed: () {
+                                  AdaptiveTheme.of(context).toggleThemeMode();
+                                  // MediaQuery.of(context).platformBrightness ==
+                                  //         Brightness.light
+                                  //     ? // sets theme mode to dark
+                                  //     AdaptiveTheme.of(context).setDark()
+                                  //     : // sets theme mode to light
+                                  //     AdaptiveTheme.of(context).setLight();
+                                },
+                                icon:
+                                    MediaQuery.of(context).platformBrightness ==
+                                            Brightness.light
+                                        ? Icon(Icons.wb_sunny_outlined)
+                                        : Icon(Icons.nightlight_outlined)),
                           ],
                         ),
-                        IconButton(
-                            onPressed: () {},
-                            icon: MediaQuery.of(context).platformBrightness ==
-                                    Brightness.light
-                                ? Icon(Icons.wb_sunny_outlined)
-                                : Icon(Icons.nightlight_outlined)),
-                      ],
-                    ),
-                    SearchBar(searchController, searchParameter),
-                    SizedBox(
-                      height: 7,
-                    ),
-                    Row(
-                      children: <Widget>[
-                        GestureDetector(
-                            child: Container(
-                          padding: const EdgeInsets.all(20.0),
-                          width: 70,
-                          height: 40,
-                          decoration: BoxDecoration(
-                              color: Theme.of(context).cardColor,
-                              //borderRadius: BorderRadius.circular(10),
-                              border: Border.all(
-                                  color: Theme.of(context).hintColor)),
-                          child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceAround,
-                              children: [
-                                FaIcon(
-                                  FontAwesomeIcons.globe,
-                                ),
-                                Text('EN'),
-                              ]),
-                        ))
-                      ],
-                    ),
-                    Flexible(
-                      child: ListView.builder(
-                          shrinkWrap: true,
-                          itemCount: snapshot.data?.length,
-                          itemBuilder: (context, index) {
-                            if (snapshot.data?[index].name?.common!
-                                        .toLowerCase()
-                                        .contains(searchController.text
-                                            .toLowerCase()) ==
-                                    true
-                                // |
-                                //     (snapshot.data?[index].capital[0]
-                                //             .toString()
-                                //             .toLowerCase()
-                                //             .contains(searchController.text
-                                //                 .toLowerCase()) ==
-                                //         true)
-                                ) {
-                              return GestureDetector(
-                                child: Padding(
-                                  padding: const EdgeInsets.all(8.0),
-                                  child: Row(
+                        const SizedBox(height: 14),
+
+                        TextField(
+                          controller: _searchController,
+                          onChanged: (value) {
+                            setState(() {
+                              searchParameter = _searchController.text;
+                            });
+                          },
+                          textAlign: TextAlign.center,
+                          decoration: InputDecoration(
+                            filled: true,
+                            fillColor: Colors.white24,
+                            prefixIcon: Icon(
+                              Icons.search,
+                              color: Theme.of(context).hintColor,
+                            ),
+                            hintText: "Search Country",
+                            hintStyle: TextStyle(
+                              fontStyle: FontStyle.normal,
+                              fontSize: 16,
+                              fontWeight: FontWeight.w300,
+                            ),
+                          ),
+                        ),
+                        const SizedBox(
+                          height: 14,
+                        ),
+                        // Language and Filter
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: <Widget>[
+                            GestureDetector(
+                              onTap: () {
+                                showModalBottomSheet(
+                                  context: context,
+                                  builder: (context) {
+                                    return SelectLanguage();
+                                  },
+                                );
+                              },
+                              child: Container(
+                                //padding: const EdgeInsets.all(20.0),
+                                width: 70,
+                                height: 40,
+                                decoration: BoxDecoration(
+                                    //color: Theme.of(context).cardColor,
+
+                                    //borderRadius: BorderRadius.circular(10),
+                                    border: Border.all(
+                                        color: Theme.of(context).hintColor)),
+                                child: Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceAround,
                                     children: <Widget>[
-                                      Container(
-                                        height: 50,
-                                        width: 40,
-                                        decoration: BoxDecoration(
-                                          image: DecorationImage(
-                                              image: NetworkImage(
-                                                  "${snapshot.data?[index].flags?.png}")),
-                                          borderRadius:
-                                              BorderRadius.circular(25),
-                                        ),
-                                        //color: Colors.grey[300],
+                                      FaIcon(
+                                        FontAwesomeIcons.globe,
+                                        color: Theme.of(context).hintColor,
+                                        size: 15,
                                       ),
-                                      const SizedBox(width: 16),
-                                      Expanded(
-                                        child: Column(
+                                      Text(
+                                        'EN',
+                                        style: TextStyle(
+                                            color: Theme.of(context).hintColor,
+                                            fontSize: 12,
+                                            fontWeight: FontWeight.w500),
+                                      ),
+                                    ]),
+                              ),
+                            ),
+                            GestureDetector(
+                              onTap: () {
+                                showModalBottomSheet(
+                                  context: context,
+                                  isDismissible: false,
+                                  builder: (context) {
+                                    return SelectLanguage();
+                                  },
+                                );
+                              },
+                              child: Container(
+                                //padding: const EdgeInsets.all(20.0),
+                                width: 70,
+                                height: 40,
+                                decoration: BoxDecoration(
+                                    //color: Theme.of(context).cardColor,
+                                    //borderRadius: BorderRadius.circular(10),
+                                    border: Border.all(
+                                        color: Theme.of(context).hintColor)),
+                                child: Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceAround,
+                                    children: <Widget>[
+                                      FaIcon(
+                                        FontAwesomeIcons.filter,
+                                        color: Theme.of(context).hintColor,
+                                        size: 15,
+                                      ),
+                                      Text(
+                                        'Filter',
+                                        style: TextStyle(
+                                            color: Theme.of(context).hintColor,
+                                            fontSize: 12,
+                                            fontWeight: FontWeight.w500),
+                                      ),
+                                    ]),
+                              ),
+                            ),
+                          ],
+                        ),
+                        const SizedBox(height: 14),
+
+                        Flexible(
+                          child: ListView.builder(
+                              shrinkWrap: true,
+                              itemCount: snapshot.data?.length,
+                              itemBuilder: (context, index) {
+                                if (snapshot.data?[index].name?.common!
+                                        .toLowerCase()
+                                        .contains(_searchController.text
+                                            .toLowerCase()) ==
+                                    true) {
+                                  return Padding(
+                                    padding: const EdgeInsets.only(bottom: 26),
+                                    child: GestureDetector(
+                                      onTap: () {
+                                        Navigator.push(
+                                            context,
+                                            MaterialPageRoute(
+                                                builder: (context) =>
+                                                    CountryDetails(
+                                                      index: index,
+                                                      countryName: snapshot
+                                                          .data?[index]
+                                                          .name
+                                                          ?.common!,
+                                                    )));
+                                      },
+                                      child: Row(
+                                        children: [
+                                          ClipRRect(
+                                            clipBehavior: Clip.hardEdge,
+                                            borderRadius:
+                                                BorderRadius.circular(5),
+                                            child: Image.network(
+                                              "${snapshot.data?[index].flags?.png}",
+                                              height: 40,
+                                              width: 40,
+                                              fit: BoxFit.fitHeight,
+                                            ),
+                                          ),
+                                          const SizedBox(
+                                            width: 16,
+                                          ),
+                                          Column(
                                             crossAxisAlignment:
                                                 CrossAxisAlignment.start,
-                                            children: <Widget>[
+                                            children: [
                                               Text(
                                                 "${snapshot.data?[index].name?.common}",
                                                 style: Theme.of(context)
@@ -160,33 +263,25 @@ class _CountriesScreenState extends State<CountriesScreen> {
                                                     .textTheme
                                                     .headline2,
                                               ),
-                                            ]),
+                                            ],
+                                          ),
+                                        ],
                                       ),
-                                    ],
-                                  ),
-                                ),
-                                onTap: () {
-                                  Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                          builder: (context) => CountryDetails(
-                                                index: index,
-                                                countryName: snapshot
-                                                    .data?[index].name?.common!,
-                                              )));
-                                },
-                              );
-                            } else {
-                              return Container();
-                            }
-                          }),
-                    )
-                  ]);
-            } else if (snapshot.hasError) {
-              return Text("${snapshot.error}");
-            }
-            return const Text("error");
-          }),
-    );
+                                    ),
+                                  );
+                                } else {
+                                  return Container();
+                                }
+                              }),
+                        ),
+                      ],
+                    );
+                  } else if (snapshot.hasError) {
+                    return Text("${snapshot.error}");
+                  }
+                  return const Text("error");
+                }),
+          ),
+        ));
   }
 }
