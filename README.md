@@ -4,7 +4,7 @@ Countries application displays detailed information about all the countries in t
 
 - Searchable by country name
 
-## The Codebase consists of two srceens
+## The Codebase consists of two screens
 - countries_screen.dart
 - details_screen
 
@@ -23,7 +23,7 @@ Countries application displays detailed information about all the countries in t
 ## Features I would like to add if I had more time
 - Language selection
 - Filter
-- 
+- In app theme change
 
 •	A link to the APK or IPA file
 - https://drive.google.com/file/d/1gGi4QXDE9h5ZtU12LPRqYsGn_qXpx_Lc/view?usp=sharing
